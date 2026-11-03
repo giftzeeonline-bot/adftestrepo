@@ -1,0 +1,12 @@
+{
+	"name": "ls_retail_sql",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "server=tcp:sql-retail-b153d5.database.windows.net,1433;database=RetailOLTP;user id=retailadmin;encrypt=True;trustservercertificate=False;connection timeout=60",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEFGRjA4MjIxLUNCNTEtNDlFQy04QjA4LUM0RURGNzdFQkM0RF9hYTYzNDU3Ny00MTY3LTQyYjctODdlMS1iMDllNDBiNmE2ZWEiDQp9"
+		},
+		"annotations": []
+	}
+}

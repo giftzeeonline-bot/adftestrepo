@@ -1,0 +1,24 @@
+{
+	"name": "ds_sql_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_retail_sql",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"table": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().table",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

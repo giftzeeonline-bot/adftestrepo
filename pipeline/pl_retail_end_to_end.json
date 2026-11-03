@@ -1,0 +1,348 @@
+{
+	"name": "pl_retail_end_to_end",
+	"properties": {
+		"description": "Ingest 32 linked synthetic retail tables from Blob CSV, Azure SQL, paginated JSON API and separate ADLS Parquet; validate and publish silver/gold. Manual execution; no recurring schedule.",
+		"activities": [
+			{
+				"name": "Ingest_blob_tables",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json('[\"categories\", \"brands\", \"products\", \"stores\", \"channels\", \"promotions\", \"product_prices\", \"product_attributes\"]')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy_blob_table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "00:20:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": true,
+								"secureInput": true
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": false
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_catalog_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_blob",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Ingest_sql_tables",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json('[\"customers\", \"customer_addresses\", \"employees\", \"orders\", \"order_items\", \"payments\", \"returns\", \"return_items\"]')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy_sql_table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "00:20:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": true,
+								"secureInput": true
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "00:05:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sql_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_sql",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Ingest_api_tables",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json('[\"campaigns\", \"web_sessions\", \"clickstream_events\", \"carts\", \"cart_items\", \"product_reviews\", \"support_tickets\", \"delivery_events\"]')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy_api_table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "00:20:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": true,
+								"secureInput": true
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.100",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"AbsoluteUrl": "$.next_url"
+									}
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings",
+										"filePattern": "setOfObjects"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_api_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_api",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Ingest_adls_tables",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json('[\"suppliers\", \"warehouses\", \"inventory_snapshots\", \"stock_movements\", \"purchase_orders\", \"purchase_order_items\", \"shipments\", \"shipment_items\"]')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy_adls_table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "00:20:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": true,
+								"secureInput": true
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": false
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_supply_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_bronze_adls",
+									"type": "DatasetReference",
+									"parameters": {
+										"table": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Validate_and_build_silver_gold",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "Ingest_blob_tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Ingest_sql_tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Ingest_api_tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Ingest_adls_tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "00:10:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": true
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "pipeline/transform",
+					"body": "{}",
+					"method": "POST"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_retail_functions",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"concurrency": 1,
+		"annotations": [
+			"retail",
+			"four-sources",
+			"development"
+		],
+		"lastPublishTime": "2026-10-30T02:40:33Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
