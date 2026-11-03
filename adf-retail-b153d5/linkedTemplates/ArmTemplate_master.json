@@ -1,0 +1,91 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-retail-b153d5"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"ls_catalog_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_catalog_blob'"
+		},
+		"ls_retail_functions_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ls_retail_functions'"
+		},
+		"ls_retail_lake_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_retail_lake'"
+		},
+		"ls_retail_sql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_retail_sql'"
+		},
+		"ls_retail_api_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://func-retail-api-b153d5.azurewebsites.net/api/"
+		},
+		"ls_retail_functions_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://func-retail-api-b153d5.azurewebsites.net"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-retail-b153d5_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"ls_catalog_blob_connectionString": {
+						"value": "[parameters('ls_catalog_blob_connectionString')]"
+					},
+					"ls_retail_functions_functionKey": {
+						"value": "[parameters('ls_retail_functions_functionKey')]"
+					},
+					"ls_retail_lake_connectionString": {
+						"value": "[parameters('ls_retail_lake_connectionString')]"
+					},
+					"ls_retail_sql_connectionString": {
+						"value": "[parameters('ls_retail_sql_connectionString')]"
+					},
+					"ls_retail_api_properties_typeProperties_url": {
+						"value": "[parameters('ls_retail_api_properties_typeProperties_url')]"
+					},
+					"ls_retail_functions_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ls_retail_functions_properties_typeProperties_functionAppUrl')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

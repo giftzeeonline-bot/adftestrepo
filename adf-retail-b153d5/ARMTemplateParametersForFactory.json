@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-retail-b153d5"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"ls_catalog_blob_connectionString": {
+			"value": ""
+		},
+		"ls_retail_functions_functionKey": {
+			"value": ""
+		},
+		"ls_retail_lake_connectionString": {
+			"value": ""
+		},
+		"ls_retail_sql_connectionString": {
+			"value": ""
+		},
+		"ls_retail_api_properties_typeProperties_url": {
+			"value": "https://func-retail-api-b153d5.azurewebsites.net/api/"
+		},
+		"ls_retail_functions_properties_typeProperties_functionAppUrl": {
+			"value": "https://func-retail-api-b153d5.azurewebsites.net"
+		}
+	}
+}
