@@ -1,0 +1,52 @@
+{
+	"name": "ds_blob_sales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Sales.csv",
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Saels 1",
+				"type": "String"
+			},
+			{
+				"name": "Saels 2",
+				"type": "String"
+			},
+			{
+				"name": "Saels 3",
+				"type": "String"
+			},
+			{
+				"name": "Saels 4",
+				"type": "String"
+			},
+			{
+				"name": "Saels 5",
+				"type": "String"
+			},
+			{
+				"name": "Saels 6",
+				"type": "String"
+			},
+			{
+				"name": "Saels 7",
+				"type": "String"
+			}
+		]
+	}
+}
