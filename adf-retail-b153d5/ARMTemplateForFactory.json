@@ -59,20 +59,12 @@
 							"isSequential": true,
 							"activities": [
 								{
-									"name": "Set_Current_Number",
-									"type": "SetVariable",
+									"name": "Wait1",
+									"type": "Wait",
 									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "CurrentNumber",
-										"value": {
-											"value": "@string(item())",
-											"type": "Expression"
-										}
+										"waitTimeInSeconds": 1
 									}
 								}
 							]
@@ -81,11 +73,6 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"CurrentNumber": {
-						"type": "String"
-					}
 				},
 				"annotations": []
 			},
