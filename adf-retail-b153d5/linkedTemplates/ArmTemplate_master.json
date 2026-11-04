@@ -11,6 +11,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"ls_azure_sqldatabse_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_azure_sqldatabse'"
+		},
+		"ls_blob_storag_retail_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_blob_storag_retail'"
+		},
 		"ls_catalog_blob_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_catalog_blob'"
@@ -26,6 +34,18 @@
 		"ls_retail_sql_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_retail_sql'"
+		},
+		"ls_azure_sqldatabse_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "retailoltpnov2026.database.windows.net"
+		},
+		"ls_azure_sqldatabse_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "walmart_production_database"
+		},
+		"ls_azure_sqldatabse_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "edukron"
 		},
 		"ls_retail_api_properties_typeProperties_url": {
 			"type": "string",
@@ -65,6 +85,12 @@
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
+					"ls_azure_sqldatabse_password": {
+						"value": "[parameters('ls_azure_sqldatabse_password')]"
+					},
+					"ls_blob_storag_retail_connectionString": {
+						"value": "[parameters('ls_blob_storag_retail_connectionString')]"
+					},
 					"ls_catalog_blob_connectionString": {
 						"value": "[parameters('ls_catalog_blob_connectionString')]"
 					},
@@ -76,6 +102,15 @@
 					},
 					"ls_retail_sql_connectionString": {
 						"value": "[parameters('ls_retail_sql_connectionString')]"
+					},
+					"ls_azure_sqldatabse_properties_typeProperties_server": {
+						"value": "[parameters('ls_azure_sqldatabse_properties_typeProperties_server')]"
+					},
+					"ls_azure_sqldatabse_properties_typeProperties_database": {
+						"value": "[parameters('ls_azure_sqldatabse_properties_typeProperties_database')]"
+					},
+					"ls_azure_sqldatabse_properties_typeProperties_userName": {
+						"value": "[parameters('ls_azure_sqldatabse_properties_typeProperties_userName')]"
 					},
 					"ls_retail_api_properties_typeProperties_url": {
 						"value": "[parameters('ls_retail_api_properties_typeProperties_url')]"

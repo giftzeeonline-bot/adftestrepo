@@ -8,6 +8,12 @@
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
+		"ls_azure_sqldatabse_password": {
+			"value": ""
+		},
+		"ls_blob_storag_retail_connectionString": {
+			"value": ""
+		},
 		"ls_catalog_blob_connectionString": {
 			"value": ""
 		},
@@ -19,6 +25,15 @@
 		},
 		"ls_retail_sql_connectionString": {
 			"value": ""
+		},
+		"ls_azure_sqldatabse_properties_typeProperties_server": {
+			"value": "retailoltpnov2026.database.windows.net"
+		},
+		"ls_azure_sqldatabse_properties_typeProperties_database": {
+			"value": "walmart_production_database"
+		},
+		"ls_azure_sqldatabse_properties_typeProperties_userName": {
+			"value": "edukron"
 		},
 		"ls_retail_api_properties_typeProperties_url": {
 			"value": "https://func-retail-api-b153d5.azurewebsites.net/api/"
