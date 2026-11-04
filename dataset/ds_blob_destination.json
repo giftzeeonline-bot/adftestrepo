@@ -1,0 +1,22 @@
+{
+	"name": "ds_blob_destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_storag_retail",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "destination"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
